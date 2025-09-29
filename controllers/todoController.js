@@ -9,6 +9,23 @@ exports.getAllTodos = async (req, res) => {
   }
 };
 
+exports.getTodosByCompleted = async (req, res) => {
+  try {
+    const { completed } = req.query;
+    let filter = {};
+  
+    if (completed === 'true') {
+      filter.completed = true;
+    } else if (completed === 'false') {
+      filter.completed = false;
+    }
+  
+    const todos = await Todo.find(filter);
+    res.status(200).json(todos);
+  } catch (err) {
+    res.status(500).json({ error: "Server error" });
+  }
+};
 exports.getTodo = async (req, res) => {
   try {
     const todo = await Todo.findById(req.params.id);
